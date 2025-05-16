@@ -1,0 +1,66 @@
+.borderpane{
+    -fx-background-color: #5f5f5f; 
+    -fx-border-width: 2px;
+}
+.text{
+    -fx-text-fill: white;
+}
+.list-view{
+    -fx-background-color: #5f5f5f; 
+    -fx-border-width: 2px;
+    -fx-border-color: transparent  #242424  transparent transparent ;
+    -fx-padding: 0px;
+}
+.menu-bar {
+    -fx-background-color: #242424;
+    -fx-border-width: 2px;
+    -fx-border-color: transparent  transparent  #d8811a transparent ;
+}
+.menu .label {
+    -fx-text-fill: #979797; 
+}
+.menu:hover {
+    -fx-background-color: #5f5f5f; 
+    -fx-border-color: #d8811a;
+}
+
+.list-cell:odd {
+    -fx-background-color: #5f5f5f;
+    -fx-text-fill: #ffff; 
+}
+.list-cell:even {
+    -fx-background-color: #707070;
+    -fx-text-fill: #ffff; 
+}
+
+
+/* Vertical scrollbar track */
+.list-view .scroll-bar:vertical {
+    -fx-background-color: #242424;
+    -fx-pref-width: 12px;
+}
+
+/* Vertical scrollbar thumb */
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #d8811a;
+    -fx-background-radius: 6px;
+    -fx-background-insets: 2px;
+}
+
+/* Horizontal scrollbar track */
+.list-view .scroll-bar:horizontal {
+    -fx-background-color: #242424;
+    -fx-pref-height: 12px;
+}
+
+/* Horizontal scrollbar thumb */
+.list-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #d8811a;
+    -fx-background-radius: 6px;
+    -fx-background-insets: 2px;
+}
+
+.list-view .corner {
+    -fx-background-color: #242424;
+    -fx-border-color: transparent;
+}

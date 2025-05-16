@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MinecraftBo3:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MinecraftBo3_jar</output-path>
+    <root id="archive" name="MinecraftBo3.jar">
+      <element id="module-output" name="MinecraftBo3" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/24.0.1/javafx-controls-24.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/24.0.1/javafx-graphics-24.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/24.0.1/javafx-base-24.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/Querz/NBT/6.1/NBT-6.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/24.0.1/javafx-fxml-24.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/24.0.1/javafx-graphics-24.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/24.0.1/javafx-base-24.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/24.0.1/javafx-controls-24.0.1-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/24.0.1/javafx-fxml-24.0.1.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Maven: com.github.Querz:NBT:6.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:24.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:24.0.1" />
+    </root>
+  </artifact>
+</component>

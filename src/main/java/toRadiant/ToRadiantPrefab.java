@@ -13,7 +13,15 @@ import java.util.regex.Pattern;
 
 public class ToRadiantPrefab {
     public static void createPrefab(String fileName, HelloController controller, Map map) {
-        map.SaveMapInFile(fileName.replace(".litematic", ".map"),controller);
+        if(fileName.contains(".litematic")) {
+            map.SaveMapInFile(fileName.replace(".litematic", ".map"),controller);
+        }
+        else if(fileName.contains(".schem")) {
+            map.SaveMapInFile(fileName.replace(".schem", ".map"),controller);
+        }
+        else if(fileName.contains(".schematic")) {
+            map.SaveMapInFile(fileName.replace(".schematic", ".map"),controller);
+        }
     }
 
     public static int[] extractCoordinates(String line) {
@@ -34,7 +42,11 @@ public class ToRadiantPrefab {
         return null;
     }
 
-    public static void readBlockData(String worldPos, String blockName, Map map, File fileIds) {
+    public static void readBlockData( String blockName,int x, int y, int z, Map map, File fileIds) {
+        if(blockName.contains("minecraft:air")){
+            return;
+        }
+
         String blockID = "stone";
         if(blockName.contains("cobblestone")){
             if(blockName.contains("mossy")){
@@ -68,32 +80,29 @@ public class ToRadiantPrefab {
         }
 
         // Verifie qu il ne s agisse pas d un bloc d air
-        if (!blockName.contains("minecraft:air") && !blockName.contains("minecraft:water")&& !blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
-            int[] coordinates = extractCoordinates(worldPos);
-            if (coordinates != null) {
-                System.out.println(blockName);
-                // Verifier si c'est une dalle
-                if(blockName.contains("slab")){
-                    map.AddSlab(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID), blockName.contains("type=bottom"));
+        if (!blockName.contains("minecraft:water")&& !blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
+            // Verifier si c'est une dalle
+            if(blockName.contains("slab")){
+                map.AddSlab(x, z, y, MatchingBlock.Get(blockID), blockName.contains("type=bottom"));
+            }
+            else if(blockName.contains("stairs")){
+                if (blockName.contains("facing=north")) {
+                    map.AddStairs(x, z, y, MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.NORTH);
                 }
-                else if(blockName.contains("stairs")){
-                    if (blockName.contains("facing=north")) {
-                        map.AddStairs(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.NORTH);
-                    }
-                    else if (blockName.contains("facing=south")) {
-                        map.AddStairs(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.SOUTH);
-                    }
-                    else if (blockName.contains("facing=east")) {
-                        map.AddStairs(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.EAST);
-                    }
-                    else{
-                        map.AddStairs(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.WEST);
-                    }
+                else if (blockName.contains("facing=south")) {
+                    map.AddStairs(x, z, y, MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.SOUTH);
+                }
+                else if (blockName.contains("facing=east")) {
+                    map.AddStairs(x, z, y, MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.EAST);
                 }
                 else{
-                    map.AddBlock(coordinates[0], coordinates[2], coordinates[1], MatchingBlock.Get(blockID));
+                    map.AddStairs(x, z, y, MatchingBlock.Get(blockID).replace("stairs", "slab"), blockName.contains("half=bottom"),Direction.WEST);
                 }
             }
+            else{
+                map.AddBlock(x, z, y, MatchingBlock.Get(blockID));
+            }
+            
             //System.out.println(position + " " + blockName);
         }
 

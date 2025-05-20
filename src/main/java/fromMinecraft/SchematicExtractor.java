@@ -1,101 +1,69 @@
-
 package fromMinecraft;
 
-import net.querz.nbt.io.NBTDeserializer;
-import net.querz.nbt.io.NamedTag;
-import net.querz.nbt.tag.*;
+
+import com.example.minecraftbo3.HelloController;
+import javafx.concurrent.Task;
+import net.sandrohc.schematic4j.SchematicLoader;
+import net.sandrohc.schematic4j.schematic.Schematic;
+import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import toRadiant.Map;
 import toRadiant.ToRadiantPrefab;
 
-import java.io.*;
-import java.util.zip.GZIPInputStream;
+import java.io.File;
+import java.io.IOException;
+
 
 public class SchematicExtractor {
 
-    public static String Extract(String path, Map map, File fileIDs) {
-        try {
-            parseLitematicaFile(new File(path), map,fileIDs);
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+    public void Extract(String path, Map map, File fileIDs, HelloController controller) {
+        System.out.println("Extracting Schematic");
+
+        // Création d'une tâche pour exécuter hors du thread JavaFX
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                parseFile(path, map, fileIDs,controller);
+                return null;
+            }
+        };
+
+        // Gestion des exceptions
+        task.setOnFailed(event -> {
+            Throwable e = task.getException();
+            System.err.println("Erreur lors du chargement du schematic:");
             e.printStackTrace();
-        }
-        return null;
+        });
+
+        new Thread(task).start();
     }
 
-    public static void parseLitematicaFile(File file, Map map, File fileIDs) throws IOException {
-        NBTDeserializer deserializer = new NBTDeserializer(false);
-        NamedTag namedTag = deserializer.fromStream(new GZIPInputStream(new FileInputStream(file)));
-        CompoundTag root = (CompoundTag) namedTag.getTag();
+    public void parseFile(String filepath, Map map, File fileIDs, HelloController controller) {
+        File schemFile = new File(filepath);
+        try {
+            System.out.println("Chemin du fichier: " + schemFile.getAbsolutePath());
 
-        // Get real dimensions from Metadata
-        CompoundTag metadata = root.getCompoundTag("Metadata");
-        CompoundTag enclosingSize = metadata.getCompoundTag("EnclosingSize");
-        int sizeX = enclosingSize.getInt("x");
-        int sizeY = enclosingSize.getInt("y");
-        int sizeZ = enclosingSize.getInt("z");
+            if (!schemFile.exists()) {
+                throw new IOException("Le fichier n'existe pas: " + schemFile.getAbsolutePath());
+            }
 
-        System.out.printf("Actual schematic size: %dx%dx%d%n", sizeX, sizeY, sizeZ);
-
-        CompoundTag regions = root.getCompoundTag("Regions");
-        for (String regionName : regions.keySet()) {
-            CompoundTag region = regions.getCompoundTag(regionName);
-
-            // Use position from region but our corrected size
-            int posX = region.getInt("PositionX");
-            int posY = region.getInt("PositionY");
-            int posZ = region.getInt("PositionZ");
-
-            ListTag<CompoundTag> palette = region.getListTag("BlockStatePalette").asCompoundTagList();
-            long[] blockStates = region.getLongArray("BlockStates");
-
-            int bitsPerBlock = Math.max(4, 32 - Integer.numberOfLeadingZeros(palette.size() - 1));
-            int blocksPerLong = 64 / bitsPerBlock;
-            int mask = (1 << bitsPerBlock) - 1;
-
-            System.out.printf("Processing %,d blocks with %,d palette entries%n",
-                    sizeX * sizeY * sizeZ, palette.size());
-
-            for (int y = 0; y < sizeY; y++) {
-                for (int z = 0; z < sizeZ; z++) {
-                    for (int x = 0; x < sizeX; x++) {
-                        int index = y * sizeZ * sizeX + z * sizeX + x;
-                        int longIndex = index / blocksPerLong;
-                        int offset = (index % blocksPerLong) * bitsPerBlock;
-
-                        if (longIndex < blockStates.length) {
-                            long value = (blockStates[longIndex] >>> offset) & mask;
-                            if (value < palette.size()) {
-                                CompoundTag blockState = palette.get((int) value);
-                                String blockName = blockState.getString("Name");
-                                if (!blockName.equals("minecraft:air")) { // Skip air blocks
-                                    String blockStateStr = "";
-                                    if (blockState.containsKey("Properties")) {
-                                        CompoundTag properties = blockState.getCompoundTag("Properties");
-                                        blockStateStr = propertiesToString(properties);
-                                    }
-                                    String worldPos = String.format("(%d,%d,%d)", posX + x, posY + y, posZ + z);
-                                    ToRadiantPrefab.readBlockData(worldPos,blockName+blockStateStr,map,fileIDs);
-                                }
-                            }
+            Schematic schematic = SchematicLoader.load(schemFile);
+            for (int x = 0; x < schematic.width(); x++) {
+                for (int y = 0; y < schematic.height(); y++) {
+                    for (int z = 0; z < schematic.length(); z++) {
+                        SchematicBlock block = schematic.block(x, y, z);
+                        if(!block.name().equals("minecraft:air")){
+                            //System.out.println("(x: " + x + ", y: " + y + ", z: " + z+"): "+block.name()+block.states());
+                            ToRadiantPrefab.readBlockData(block.name()+block.states().values(),x,y,z,map,fileIDs );
+                            controller.addLabel(block.name());
                         }
                     }
                 }
             }
-        }
-    }
-    private static String propertiesToString(CompoundTag properties) {
-        StringBuilder sb = new StringBuilder("[");
-        boolean first = true;
 
-        for (String key : properties.keySet()) {
-            if (!first) {
-                sb.append(",");
-            }
-            sb.append(key).append("=").append(properties.getString(key));
-            first = false;
-        }
+            ToRadiantPrefab.createPrefab(filepath,controller,map);
 
-        sb.append("]");
-        return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur dans parseFile", e);
+        }
     }
 }

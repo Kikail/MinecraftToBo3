@@ -1,6 +1,8 @@
 package com.example.minecraftbo3;
 
 import fromMinecraft.SchematicExtractor;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,10 +17,7 @@ import javafx.stage.Stage;
 import toRadiant.Map;
 import toRadiant.ToRadiantPrefab;
 
-import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 public class HelloController {
@@ -41,7 +40,7 @@ public class HelloController {
     void lookForFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Litematic File","*.litematic"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("File","*.litematic","*.schem",".schematic"));
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
             File fileIds = new File("MinecraftIds.txt");
@@ -54,12 +53,13 @@ public class HelloController {
                 return;
             }
 
-            listView.getSelectionModel().clearSelection();
+            listView.getItems().clear();
             listView.getItems().add(new Label(file.getAbsolutePath()));
             // On doit deja transformer le .schem en .txt
             Map map = new Map();
-            SchematicExtractor.Extract(file.getAbsolutePath(), map,fileIds);
-            ToRadiantPrefab.createPrefab(file.getAbsolutePath(),this,map);
+
+            SchematicExtractor extractor = new SchematicExtractor();
+            extractor.Extract(file.getAbsolutePath(), map, fileIds,this);
         }
     }
 
@@ -79,18 +79,19 @@ public class HelloController {
         }
 
         String filepath = selectedFile.getAbsolutePath();
-        if(filepath.endsWith(".litematic")) {
-            listView.getSelectionModel().clearSelection();
+        if(filepath.endsWith(".litematic") || filepath.endsWith(".schem") || filepath.endsWith(".schematic")) {
+            listView.getItems().clear();
             listView.getItems().add(new Label(filepath));
             // On doit deja transformer le .schem en .txt
             Map map = new Map();
-            SchematicExtractor.Extract(filepath, map,fileIDs);
-            ToRadiantPrefab.createPrefab(filepath,this,map);
+
+            SchematicExtractor extractor = new SchematicExtractor();
+            extractor.Extract(filepath, map, fileIDs,this);
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid File Type");
-            alert.setHeaderText("Please Select a .litematic file");
+            alert.setHeaderText("Please Select a  file");
             alert.setContentText("");
             alert.showAndWait();
         }
@@ -102,7 +103,18 @@ public class HelloController {
     }
 
     public void addLabel(String text){
-        listView.getItems().add(new Label(text));
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                listView.getItems().add(new Label(text));
+            }
+        };
+        if(Platform.isFxApplicationThread()){
+            runnable.run();
+        }
+        else {
+            Platform.runLater(runnable);
+        }
     }
 
 }

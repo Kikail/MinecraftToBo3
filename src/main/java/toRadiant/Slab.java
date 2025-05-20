@@ -56,12 +56,12 @@ public class Slab extends Brush {
         s += "// brush " + identifiant + "\n";
         s += "{\n";
         s += " guid \"{"+getIdFormat()+"-0101-0101-0101-010101010101}\"\n";
-        s += " "+bottom.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 -20 -20 0 0\n";
-        s += " "+top.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 -20 -20 0 0\n";
-        s += " "+front.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 -20 20 0 0\n";
-        s += " "+back.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 20 20 0 0\n";
-        s += " "+left.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 -20 20 0 0\n";
-        s += " "+right.toString() + " " + texture + " " + "40 -40 20 -20 180 0 lightmap_gray 16384 16384 20 20 0 0\n";
+        s += " "+bottom.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 -20 -20 0 0\n";
+        s += " "+top.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 -20 -20 0 0\n";
+        s += " "+front.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 -20 20 0 0\n";
+        s += " "+back.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 20 20 0 0\n";
+        s += " "+left.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 -20 20 0 0\n";
+        s += " "+right.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 20 20 0 0\n";
         s += "}\n";
         return s;
     }

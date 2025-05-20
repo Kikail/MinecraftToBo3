@@ -1,5 +1,7 @@
 package com.example.minecraftbo3;
 
+
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +17,6 @@ public class HelloApplication extends Application {
         Parent p = (Parent) root.load();
         Scene scene = new Scene(p);
         HelloController controller = (HelloController)root.getController();
-        controller.stage = stage;
         stage.setTitle("MinecraftToBo3");
         stage.setScene(scene);
         stage.show();

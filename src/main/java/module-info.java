@@ -1,8 +1,11 @@
 module com.example.minecraftbo3 {
-    requires javafx.controls;
-    requires javafx.fxml;
+
     requires NBT;
     requires java.desktop;
+    requires schematic4j;
+    requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.controls;
 
 
     opens com.example.minecraftbo3 to javafx.fxml;

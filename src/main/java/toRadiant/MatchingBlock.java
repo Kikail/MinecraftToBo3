@@ -9,7 +9,11 @@ public class MatchingBlock {
             withoutPrefix = withoutPrefix.substring(0, bracketIndex);
         }
 
-        String fs = "_mc_block_" + withoutPrefix;
-        return fs;
+        if(s.equals("stone")){
+            String fs = "_mc_block_" + withoutPrefix;
+            return fs;
+        }
+
+        return withoutPrefix;
     }
 }

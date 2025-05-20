@@ -78,7 +78,7 @@ public class Map {
             int i = 0;
             for(Brush b : blocks){
                 writer.write(b.toString());
-                controller.addLabel("Brush "+i);
+                controller.addLabel(b.getName());
                 i++;
             }
             writer.write(footer());

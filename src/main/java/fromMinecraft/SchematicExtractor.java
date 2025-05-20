@@ -4,15 +4,17 @@ package fromMinecraft;
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.tag.*;
+import toRadiant.Map;
+import toRadiant.ToRadiantPrefab;
+
 import java.io.*;
-import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 public class SchematicExtractor {
 
-    public static String Extract(String path) {
+    public static String Extract(String path, Map map, File fileIDs) {
         try {
-            return parseLitematicaFile(new File(path));
+            parseLitematicaFile(new File(path), map,fileIDs);
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -20,10 +22,7 @@ public class SchematicExtractor {
         return null;
     }
 
-    public static String parseLitematicaFile(File file) throws IOException {
-        String newPath = file.getAbsolutePath().replace(".litematic",".txt");
-        FileWriter writer = new FileWriter(newPath);
-
+    public static void parseLitematicaFile(File file, Map map, File fileIDs) throws IOException {
         NBTDeserializer deserializer = new NBTDeserializer(false);
         NamedTag namedTag = deserializer.fromStream(new GZIPInputStream(new FileInputStream(file)));
         CompoundTag root = (CompoundTag) namedTag.getTag();
@@ -66,11 +65,16 @@ public class SchematicExtractor {
                         if (longIndex < blockStates.length) {
                             long value = (blockStates[longIndex] >>> offset) & mask;
                             if (value < palette.size()) {
-                                String blockName = palette.get((int) value).getString("Name");
+                                CompoundTag blockState = palette.get((int) value);
+                                String blockName = blockState.getString("Name");
                                 if (!blockName.equals("minecraft:air")) { // Skip air blocks
-                                    String worldPos = String.format("\"(%d,%d,%d)\"", posX + x, posY + y, posZ + z);
-                                    String blocID = "\""+blockName+"\"";
-                                    writer.write(worldPos+blocID+"\n");
+                                    String blockStateStr = "";
+                                    if (blockState.containsKey("Properties")) {
+                                        CompoundTag properties = blockState.getCompoundTag("Properties");
+                                        blockStateStr = propertiesToString(properties);
+                                    }
+                                    String worldPos = String.format("(%d,%d,%d)", posX + x, posY + y, posZ + z);
+                                    ToRadiantPrefab.readBlockData(worldPos,blockName+blockStateStr,map,fileIDs);
                                 }
                             }
                         }
@@ -78,7 +82,20 @@ public class SchematicExtractor {
                 }
             }
         }
-        writer.close();
-        return newPath;
+    }
+    private static String propertiesToString(CompoundTag properties) {
+        StringBuilder sb = new StringBuilder("[");
+        boolean first = true;
+
+        for (String key : properties.keySet()) {
+            if (!first) {
+                sb.append(",");
+            }
+            sb.append(key).append("=").append(properties.getString(key));
+            first = false;
+        }
+
+        sb.append("]");
+        return sb.toString();
     }
 }

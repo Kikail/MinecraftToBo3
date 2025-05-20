@@ -14,6 +14,9 @@ public class Block extends Brush{
         left = new Face(new Vector3D(20,20,140), new Vector3D(-20,20,140), new Vector3D(-20,20,-20));
         right = new Face(new Vector3D(-20,20,140), new Vector3D(-20,-20,140), new Vector3D(-20,-20,-20));
     }
+    public String getName(){
+        return texture;
+    }
     public Block(int x, int y, int z, String t,int id){
         identifiant = id;
         texture = t;

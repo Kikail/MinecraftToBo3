@@ -65,4 +65,7 @@ public class Slab extends Brush {
         s += "}\n";
         return s;
     }
+    public String getName(){
+        return texture;
+    }
 }

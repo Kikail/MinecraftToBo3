@@ -85,6 +85,9 @@ public class Stairs extends Brush {
 
         slab = s;
     }
+    public String getName(){
+        return texture;
+    }
     public String getIdFormat(){
         int i = 0;
         int diviser = 10000000;

@@ -43,6 +43,10 @@ public class ToRadiantPrefab {
     }
 
     public static void readBlockData( String blockName,int x, int y, int z, Map map, File fileIds) {
+        if(blockName.contains("minecraft:water")){
+            return;
+        }
+
         String blockID = "stone";
         try{
             Scanner scan = new Scanner(fileIds);
@@ -54,8 +58,6 @@ public class ToRadiantPrefab {
                 if (bracketIndex != -1) {
                     withoutPrefix = withoutPrefix.substring(0, bracketIndex);
                 }
-
-                System.out.println(withoutPrefix);
 
                 if(lineIds.contains(withoutPrefix)){
                     String[] lineIdsSplit = lineIds.split(",");
@@ -69,7 +71,12 @@ public class ToRadiantPrefab {
         }
 
         // Verifie qu il ne s agisse pas d un bloc d air
-        if (!blockName.contains("minecraft:water")&& !blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
+        if (!blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
+            if(blockID.contains("prefab")){
+                System.out.println(blockName+" "+blockID);
+                map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),(blockName.contains("north=true") || blockName.contains("south=true")));
+                return;
+            }
             // Verifier si c'est une dalle
             if(blockName.contains("slab")){
                 map.AddSlab(x, z, y, MatchingBlock.Get(blockID), blockName.contains("type=bottom"));

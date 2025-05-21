@@ -9,9 +9,11 @@ import java.util.ArrayList;
 public class Map {
     public ArrayList<Brush> blocks;
     public int id;
+    public int idEntity;
 
     public Map(){
         id = 0;
+        idEntity = 1;
         blocks = new ArrayList<Brush>();
     }
 
@@ -27,6 +29,10 @@ public class Map {
         blocks.add(new Stairs(x,y,z,t,id,isBottom,new Slab(x,y,z,t,id+1,isBottom),d));
         id += 2;
     }
+    public void AddPrefab(int x, int y, int z, String p, boolean facingX){
+        blocks.add(new Prefab(x,y,z,p,idEntity,facingX));
+        idEntity ++;
+    }
 
     public String header(){
         String s = "";
@@ -36,7 +42,7 @@ public class Map {
         s += "\"The Map\" flags expanded \n";
         s += "// entity 0\n";
         s += "{\n";
-        s += "guid \"{D5CCCB08-2FFB-11F0-BB8A-047C16075CBE}\"\n";
+        s += "guid \"{00000000-0111-0111-0111-010101010101}\"\n";
         s += "\"classname\" \"worldspawn\"\n";
         s += "\"lutmaterial\" \"luts_t7_default\"\n";
         s += "\"fsi\" \"default\"\n";
@@ -75,12 +81,18 @@ public class Map {
             FileWriter writer = new FileWriter(filename);
 
             writer.write(header());
-            int i = 0;
             for(Brush b : blocks){
-                writer.write(b.toString());
-                i++;
+                if(!(b instanceof Prefab)){
+                    writer.write(b.toString());
+                }
             }
             writer.write(footer());
+
+            for(Brush b : blocks){
+                if(b instanceof Prefab){
+                    writer.write(b.toString());
+                }
+            }
 
             // close the writer
             writer.close();

@@ -43,7 +43,7 @@ public class HelloController {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("File","*.litematic","*.schem",".schematic"));
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
-            File fileIds = new File("MinecraftIds.txt");
+            File fileIds = new File("./MinecraftIds.txt");
             if(!fileIds.exists()){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Minecraft IDs file not found");
@@ -68,7 +68,7 @@ public class HelloController {
         List<File> files = event.getDragboard().getFiles();
         File selectedFile = files.get(0);
 
-        File fileIDs = new File("MinecraftIds.txt");
+        File fileIDs = new File("./MinecraftIds.txt");
         if(!fileIDs.exists()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Minecraft IDs file not found");

@@ -43,40 +43,29 @@ public class ToRadiantPrefab {
     }
 
     public static void readBlockData( String blockName,int x, int y, int z, Map map, File fileIds) {
-        if(blockName.contains("minecraft:air")){
-            return;
-        }
-
         String blockID = "stone";
-        if(blockName.contains("cobblestone")){
-            if(blockName.contains("mossy")){
-                blockID = "_mc_block_mossy_cobblestone";
-            }
-            else{
-                blockID = "_mc_block_cobblestone";
-            }
-        }
-        else{
-            try{
-                Scanner scan = new Scanner(fileIds);
-                while(scan.hasNext()){
-                    String lineIds = scan.nextLine().toString();
+        try{
+            Scanner scan = new Scanner(fileIds);
+            while(scan.hasNext()){
+                String lineIds = scan.nextLine().toString();
 
-                    String withoutPrefix = blockName.startsWith("minecraft:") ? blockName.substring("minecraft:".length()) : blockName;
-                    int bracketIndex = withoutPrefix.indexOf('[');
-                    if (bracketIndex != -1) {
-                        withoutPrefix = withoutPrefix.substring(0, bracketIndex);
-                    }
+                String withoutPrefix = blockName.startsWith("minecraft") ? blockName.substring("minecraft".length()) : blockName;
+                int bracketIndex = withoutPrefix.indexOf('[');
+                if (bracketIndex != -1) {
+                    withoutPrefix = withoutPrefix.substring(0, bracketIndex);
+                }
 
-                    if(lineIds.contains(withoutPrefix)){
-                        String[] lineIdsSplit = lineIds.split(",");
-                        blockID = lineIdsSplit[1];
-                    }
+                System.out.println(withoutPrefix);
+
+                if(lineIds.contains(withoutPrefix)){
+                    String[] lineIdsSplit = lineIds.split(",");
+                    blockID = lineIdsSplit[1];
+                    break;
                 }
             }
-            catch (Exception e){
+        }
+        catch (Exception e){
 
-            }
         }
 
         // Verifie qu il ne s agisse pas d un bloc d air

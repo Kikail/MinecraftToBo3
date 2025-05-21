@@ -33,7 +33,7 @@
       </MenuBar>
    </top>
    <left>
-      <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" styleClass="leftBox" BorderPane.alignment="CENTER" />
+      <ListView fx:id="listView" onMouseClicked="#handleMouseClick" prefHeight="200.0" prefWidth="200.0" styleClass="leftBox" BorderPane.alignment="CENTER" />
    </left>
    <center>
       <HBox fx:id="dragZone" alignment="CENTER" onDragDropped="#handleDrop" onDragOver="#handleDragOver" onMousePressed="#test" styleClass="borderpane" BorderPane.alignment="CENTER">

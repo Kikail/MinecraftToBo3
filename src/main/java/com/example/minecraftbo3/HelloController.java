@@ -8,9 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -33,6 +31,24 @@ public class HelloController {
     void handleDragOver(DragEvent event) {
         if(event.getDragboard().hasFiles()) {
             event.acceptTransferModes(TransferMode.ANY);
+        }
+    }
+
+    @FXML public void handleMouseClick(MouseEvent arg0) {
+        Object selected = listView.getSelectionModel().getSelectedItem();
+
+        if (selected instanceof Label) {
+            Label selectedLabel = (Label) selected;
+
+            String text = selectedLabel.getText();
+            System.out.println(text);
+
+            ClipboardContent content = new ClipboardContent();
+            content.putString(text);
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            clipboard.setContent(content);
+
+            System.out.println("Copied to clipboard: " + text);
         }
     }
 

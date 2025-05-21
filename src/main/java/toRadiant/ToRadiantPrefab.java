@@ -72,9 +72,39 @@ public class ToRadiantPrefab {
 
         // Verifie qu il ne s agisse pas d un bloc d air
         if (!blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
+
+            if(blockID.contains("_model_")){
+                String blockID_ = blockID.startsWith("_model_") ? blockID.substring("_model_".length()) : blockID;
+                System.out.println(blockID_);
+                if(blockName.contains("south=true")){
+                    map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.SOUTH);
+                }
+                else if(blockName.contains("west=true")){
+                    map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.WEST);
+                }
+                else if(blockName.contains("east=true")){
+                    map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.EAST);
+                }
+                else{
+                    map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.NORTH);
+                }
+                return;
+            }
+
             if(blockID.contains("prefab")){
-                System.out.println(blockName+" "+blockID);
-                map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),(blockName.contains("north=true") || blockName.contains("south=true")));
+                //System.out.println(blockName+" "+blockID);
+                if(blockName.contains("north=true")){
+                    map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.NORTH);
+                }
+                else if(blockName.contains("south=true")){
+                    map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.SOUTH);
+                }
+                else if(blockName.contains("east=true")){
+                    map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.EAST);
+                }
+                else if(blockName.contains("west=true")){
+                    map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.WEST);
+                }
                 return;
             }
             // Verifier si c'est une dalle

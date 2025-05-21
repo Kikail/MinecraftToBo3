@@ -1,27 +1,27 @@
 package toRadiant;
 
-public class Prefab extends Brush{
+public class Model extends Brush{
     Vector3D coordinate;
     Vector3D angles;
     String prefabName;
     int identifiant;
 
-    public Prefab(int x, int y, int z, String p,int id, Direction direction){
+    public Model(int x, int y, int z, String p, int id, Direction direction){
         prefabName = p;
         identifiant = id;
-        coordinate = new Vector3D(x*40,y*40,z*40);
+        coordinate = new Vector3D(x*40,y*40,(z*40)-20);
         switch(direction){
             case NORTH:
-                angles = new Vector3D(0,1,0);
+                angles = null;
                 break;
             case SOUTH:
-                angles = new Vector3D(0,-1,0);
+                angles = new Vector3D(0,180,0);
                 break;
             case EAST:
-                angles = new Vector3D(1,0,0);
+                angles = new Vector3D(0,270,0);
                 break;
             case WEST:
-                angles = new Vector3D(-1,0,0);
+                angles = new Vector3D(0,90,0);
                 break;
         }
     }
@@ -49,12 +49,18 @@ public class Prefab extends Brush{
         s += "// entity " + identifiant + "\n";
         s += "{\n";
         s += " guid \"{"+getIdFormat()+"-0111-0111-0111-010101010101}\"\n";
-        s += " \"classname\" \"misc_prefab\"\n";
+        s += " \"classname\" \"misc_model\"\n";
         if(angles != null){
             s += " \"angles\" \""+angles.x+" "+angles.y+" "+angles.z+"\"\n";
         }
         s += " \"model\" \""+prefabName+"\"\n";
         s += " \"origin\" \""+coordinate.x+" "+coordinate.y+" "+coordinate.z+"\"\n";
+        s += " \"lightingstate1\" \"1\"\n";
+        s += " \"lightingstate2\" \"1\"\n";
+        s += " \"lightingstate3\" \"1\"\n";
+        s += " \"lightingstate4\" \"1\"\n";
+        s += " \"modelscale\" \"1\"\n";
+        s += " \"static\" \"1\"\n";
         s += "}\n";
         return s;
     }

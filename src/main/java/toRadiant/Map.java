@@ -29,8 +29,12 @@ public class Map {
         blocks.add(new Stairs(x,y,z,t,id,isBottom,new Slab(x,y,z,t,id+1,isBottom),d));
         id += 2;
     }
-    public void AddPrefab(int x, int y, int z, String p, boolean facingX){
-        blocks.add(new Prefab(x,y,z,p,idEntity,facingX));
+    public void AddPrefab(int x, int y, int z, String p, Direction direction){
+        blocks.add(new Prefab(x,y,z,p,idEntity,direction));
+        idEntity ++;
+    }
+    public void AddModel(int x, int y, int z, String p, Direction direction){
+        blocks.add(new Model(x,y,z,p,idEntity,direction));
         idEntity ++;
     }
 
@@ -82,14 +86,14 @@ public class Map {
 
             writer.write(header());
             for(Brush b : blocks){
-                if(!(b instanceof Prefab)){
+                if(!(b instanceof Prefab)&&!(b instanceof Model)){
                     writer.write(b.toString());
                 }
             }
             writer.write(footer());
 
             for(Brush b : blocks){
-                if(b instanceof Prefab){
+                if(b instanceof Prefab || b instanceof Model){
                     writer.write(b.toString());
                 }
             }

@@ -12,10 +12,10 @@ public class Model extends Brush{
         coordinate = new Vector3D(x*40,y*40,(z*40)-20);
         switch(direction){
             case NORTH:
-                angles = null;
+                angles = new Vector3D(0,180,0);
                 break;
             case SOUTH:
-                angles = new Vector3D(0,180,0);
+                angles = null;
                 break;
             case EAST:
                 angles = new Vector3D(0,270,0);

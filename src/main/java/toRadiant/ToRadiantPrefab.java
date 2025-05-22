@@ -71,18 +71,18 @@ public class ToRadiantPrefab {
         }
 
         // Verifie qu il ne s agisse pas d un bloc d air
-        if (!blockName.contains("minecraft:barrier") && !blockName.contains("button") && !blockName.contains("minecraft:wall_torch") && !blockName.contains("minecraft:lava")) {
+        if (true) {
 
             if(blockID.contains("_model_")){
                 String blockID_ = blockID.startsWith("_model_") ? blockID.substring("_model_".length()) : blockID;
-                System.out.println(blockID_);
-                if(blockName.contains("south=true")){
+                System.out.println("Model : "+blockID_);
+                if(blockName.contains("south=true") || blockName.contains("facing=south")){
                     map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.SOUTH);
                 }
-                else if(blockName.contains("west=true")){
+                else if(blockName.contains("west=true") || blockName.contains("facing=west")){
                     map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.WEST);
                 }
-                else if(blockName.contains("east=true")){
+                else if(blockName.contains("east=true") || blockName.contains("facing=east")){
                     map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.EAST);
                 }
                 else{
@@ -92,17 +92,17 @@ public class ToRadiantPrefab {
             }
 
             if(blockID.contains("prefab")){
-                //System.out.println(blockName+" "+blockID);
-                if(blockName.contains("north=true")){
+                System.out.println("Prefab : "+blockID);
+                if(blockName.contains("north=true") || blockName.contains("facing=north")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.NORTH);
                 }
-                else if(blockName.contains("south=true")){
+                else if(blockName.contains("south=true") || blockName.contains("facing=south")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.SOUTH);
                 }
-                else if(blockName.contains("east=true")){
+                else if(blockName.contains("east=true") || blockName.contains("facing=east")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.EAST);
                 }
-                else if(blockName.contains("west=true")){
+                else if(blockName.contains("west=true") || blockName.contains("facing=west")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.WEST);
                 }
                 return;

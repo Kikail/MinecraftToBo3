@@ -12,16 +12,16 @@ public class Prefab extends Brush{
         coordinate = new Vector3D(x*40,y*40,z*40);
         switch(direction){
             case NORTH:
-                angles = new Vector3D(0,1,0);
+                angles = new Vector3D(0,180,0);
                 break;
             case SOUTH:
-                angles = new Vector3D(0,-1,0);
+                angles = null;
                 break;
             case EAST:
-                angles = new Vector3D(1,0,0);
+                angles = new Vector3D(0,270,0);
                 break;
             case WEST:
-                angles = new Vector3D(-1,0,0);
+                angles = new Vector3D(0,90,0);
                 break;
         }
     }

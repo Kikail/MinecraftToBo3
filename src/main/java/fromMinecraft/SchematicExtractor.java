@@ -47,20 +47,29 @@ public class SchematicExtractor {
             }
 
             Schematic schematic = SchematicLoader.load(schemFile);
+
+            controller.showProgressBar();
+            int totalBlocks = schematic.width() * schematic.length() * schematic.height();
+            int currentBlock = 0;
+
             for (int x = 0; x < schematic.width(); x++) {
                 for (int y = 0; y < schematic.height(); y++) {
                     for (int z = 0; z < schematic.length(); z++) {
                         SchematicBlock block = schematic.block(x, y, z);
                         if(!block.name().equals("minecraft:air")){
                             //System.out.println("(x: " + x + ", y: " + y + ", z: " + z+"): "+block.name()+block.states());
-                            ToRadiantPrefab.readBlockData(block.name()+block.states().values(),x,y,z,map,fileIDs );
+                            ToRadiantPrefab.readBlockData(block.name()+block.states().values(),schematic.width() - x - 1,y,z,map,fileIDs );
                             controller.addLabel(block.name());
                         }
+                        currentBlock ++;
+                        controller.updateProgress(currentBlock, totalBlocks);
                     }
                 }
             }
 
             ToRadiantPrefab.createPrefab(filepath,controller,map);
+            controller.hideProgressBar();
+            controller.setProcessing(false);
 
         } catch (Exception e) {
             throw new RuntimeException("Erreur dans parseFile", e);

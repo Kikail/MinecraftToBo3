@@ -75,7 +75,6 @@ public class ToRadiantPrefab {
 
             if(blockID.contains("_model_")){
                 String blockID_ = blockID.startsWith("_model_") ? blockID.substring("_model_".length()) : blockID;
-                System.out.println("Model : "+blockID_);
                 if(blockName.contains("south=true") || blockName.contains("facing=south")){
                     map.AddModel(x,z,y,MatchingBlock.Get(blockID_),Direction.SOUTH);
                 }
@@ -92,7 +91,7 @@ public class ToRadiantPrefab {
             }
 
             if(blockID.contains("prefab")){
-                System.out.println("Prefab : "+blockID);
+                //System.out.println("Prefab : "+blockID);
                 if(blockName.contains("north=true") || blockName.contains("facing=north")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.NORTH);
                 }
@@ -102,7 +101,7 @@ public class ToRadiantPrefab {
                 else if(blockName.contains("east=true") || blockName.contains("facing=east")){
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.EAST);
                 }
-                else if(blockName.contains("west=true") || blockName.contains("facing=west")){
+                else{
                     map.AddPrefab(x,z,y,MatchingBlock.Get(blockID),Direction.WEST);
                 }
                 return;

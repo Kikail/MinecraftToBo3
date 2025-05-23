@@ -64,3 +64,12 @@
     -fx-background-color: #242424;
     -fx-border-color: transparent;
 }
+
+.progress-bar {
+    -fx-control-inner-background: #5f5f5f;
+    -fx-text-box-border: #242424;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: #d8811a;
+}

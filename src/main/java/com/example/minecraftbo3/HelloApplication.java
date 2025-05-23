@@ -17,6 +17,7 @@ public class HelloApplication extends Application {
         Parent p = (Parent) root.load();
         Scene scene = new Scene(p);
         HelloController controller = (HelloController)root.getController();
+        controller.hideProgressBar();
         stage.setTitle("MinecraftToBo3");
         stage.setScene(scene);
         stage.show();

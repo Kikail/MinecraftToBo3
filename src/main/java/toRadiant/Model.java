@@ -17,10 +17,10 @@ public class Model extends Brush{
             case SOUTH:
                 angles = null;
                 break;
-            case EAST:
+            case WEST:
                 angles = new Vector3D(0,270,0);
                 break;
-            case WEST:
+            case EAST:
                 angles = new Vector3D(0,90,0);
                 break;
         }

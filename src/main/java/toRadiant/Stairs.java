@@ -20,7 +20,7 @@ public class Stairs extends Brush {
         identifiant = id;
         texture = t;
         switch (d) {
-            case Direction.WEST:
+            case Direction.EAST:
                 bottom = new Face(new Vector3D(32+(x*40),20+(y*40),0+(z*40)), new Vector3D(0+(x*40),20+(y*40),0+(z*40)), new Vector3D(0+(x*40),-12+(y*40),0+(z*40)));
                 top = new Face(new Vector3D(-20+(x*40),-12+(y*40),20+(z*40)), new Vector3D(-20+(x*40),20+(y*40),20+(z*40)), new Vector3D(12+(x*40),20+(y*40),20+(z*40)));
                 front = new Face(new Vector3D(-12+(x*40),-20+(y*40),-12+(z*40)), new Vector3D(20+(x*40),-20+(y*40),-12+(z*40)), new Vector3D(20+(x*40),-20+(y*40),-20+(z*40)));
@@ -28,7 +28,7 @@ public class Stairs extends Brush {
                 left = new Face(new Vector3D(12+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-20+(z*40)));
                 right = new Face(new Vector3D(-20+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-20+(z*40)));
                 break;
-            case Direction.EAST:
+            case Direction.WEST:
                 bottom = new Face(new Vector3D(52+(x*40),20+(y*40),0+(z*40)), new Vector3D(20+(x*40),20+(y*40),0+(z*40)), new Vector3D(20+(x*40),-12+(y*40),0+(z*40)));
                 top = new Face(new Vector3D(-20+(x*40),-12+(y*40),20+(z*40)), new Vector3D(-20+(x*40),20+(y*40),20+(z*40)), new Vector3D(12+(x*40),20+(y*40),20+(z*40)));
                 front = new Face(new Vector3D(-12+(x*40),-20+(y*40),-12+(z*40)), new Vector3D(20+(x*40),-20+(y*40),-12+(z*40)), new Vector3D(20+(x*40),-20+(y*40),-20+(z*40)));

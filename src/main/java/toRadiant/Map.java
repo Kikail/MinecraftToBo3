@@ -40,38 +40,33 @@ public class Map {
 
     public String header(){
         String s = "";
-        s += "iwmap 4\n";
-        s += "\"script_startingnumber\" 0\n";
-        s += "\"000_Global\" flags  active\n";
-        s += "\"The Map\" flags expanded \n";
-        s += "// entity 0\n";
-        s += "{\n";
-        s += "guid \"{00000000-0111-0111-0111-010101010101}\"\n";
-        s += "\"classname\" \"worldspawn\"\n";
-        s += "\"lutmaterial\" \"luts_t7_default\"\n";
-        s += "\"fsi\" \"default\"\n";
-        s += "\"gravity\" \"800\"\n";
-        s += "\"lightingquality\" \"1024\"\n";
-        s += "\"lodbias\" \"default\"\n";
-        s += "\"numOmniShadowSlices\" \"24\"\n";
-        s += "\"numSpotShadowSlices\" \"64\"\n";
-        s += "\"samplescale\" \"1\"\n";
-        s += "\"shadowslices\" \"96\"\n";
-        s += "\"sky_intensity_factor0\" \"1\"\n";
-        s += "\"sky_intensity_factor1\" \"1\"\n";
-        s += "\"skyboxmodel\" \"skybox_default_day\"\n";
-        s += "\"ssi\" \"default_day\"\n";
-        s += "\"state_alias_1\" \"State 1\"\n";
-        s += "\"state_alias_2\" \"State 2\"\n";
-        s += "\"state_alias_3\" \"State 3\"\n";
-        s += "\"state_alias_4\" \"State 4\"\n";
-        s += "\"umbraSmallestHole\" \"16\"\n";
-        s += "\"umbraSmallestOccluder\" \"96\"\n";
-        s += "\"umbraTileSize\" \"2\"\n";
-        s += "\"umbra_prime_depth\" \"1\"\n";
-        s += "\"vbloom\" \"none\"\n";
-        s += "\"vcolor\" \"none\"\n";
-        s += "\"wsi\" \"default_day\"\n";
+
+        s+="iwmap 4\n";
+        s+="\"script_startingnumber\" 0\n";
+        s+="\"000_Global\" flags  active\n";
+        s+="\"The Map\" flags expanded\n";
+        s+="// entity 0\n";
+        s+="{\n";
+        s+="guid \"{C76FCEF8-FE9C-11EE-BAE4-047C16075CBE}\"\n";
+        s+="\"classname\" \"worldspawn\"\n";
+        s+="\"lightingquality\" \"1024\"\n";
+        s+="\"samplescale\" \"1\"\n";
+        s+="\"skyboxmodel\" \"skybox_default_day\"\n";
+        s+="\"ssi\" \"default_day\"\n";
+        s+="\"wsi\" \"default_day\"\n";
+        s+="\"fsi\" \"default\"\n";
+        s+="\"gravity\" \"800\"\n";
+        s+="\"lodbias\" \"default\"\n";
+        s+="\"lutmaterial\" \"luts_t7_default\"\n";
+        s+="\"numOmniShadowSlices\" \"24\"\n";
+        s+="\"numSpotShadowSlices\" \"64\"\n";
+        s+="\"sky_intensity_factor0\" \"1\"\n";
+        s+="\"sky_intensity_factor1\" \"1\"\n";
+        s+="\"state_alias_1\" \"State 1\"\n";
+        s+="\"state_alias_2\" \"State 2\"\n";
+        s+="\"state_alias_3\" \"State 3\"\n";
+        s+="\"state_alias_4\" \"State 4\"\n";
+
         return s;
     }
     public String footer(){

@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(p);
         HelloController controller = (HelloController)root.getController();
         controller.hideProgressBar();
-        stage.setTitle("MinecraftToBo3");
+        stage.setTitle("Block2Prefab");
         stage.setScene(scene);
         stage.show();
     }

@@ -29,6 +29,21 @@ This allows you to bring your Minecraft structures directly into your custom BO3
 
 ---
 
+## ⚙️ Prerequisites
+
+Before using Block2Prefab, make sure you have the following installed:
+
+- ✅ [Java 22.0](https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html) or later
+- ✅ [Minecraft Mod Tools Pack by Sphynx](https://www.t7wiki.com/Minecraft-Mod-Tools-Pack) – Required to support Minecraft-style blocks and assets in BO3
+
+---
+
+## 📥 Installation
+
+Drag and drop the map_source folder in the Bo3 root folder
+
+---
+
 ## 🔁 Block Mapping System (Customizable)
 
 Block2Prefab uses a **user-editable `.txt` file** to map Minecraft block IDs to Call of Duty: BO3 asset equivalents. This allows precise control over how each block should be interpreted in Radiant.

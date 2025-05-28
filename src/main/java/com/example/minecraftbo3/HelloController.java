@@ -59,6 +59,20 @@ public class HelloController {
         }
     }
 
+    public static File findFileIgnoreCase(String folderPath, String targetFileName) {
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().equalsIgnoreCase(targetFileName)) {
+                    return file;
+                }
+            }
+        }
+        return null;
+    }
+
     @FXML
     void lookForFile(ActionEvent event) {
         if(processing) return;
@@ -68,7 +82,7 @@ public class HelloController {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("File","*.litematic","*.schem",".schematic"));
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
-            File fileIds = new File("./MinecraftIds.txt");
+            File fileIds = findFileIgnoreCase("./","MinecraftIds.txt");
             if(!fileIds.exists()){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Minecraft IDs file not found");
@@ -95,7 +109,7 @@ public class HelloController {
         List<File> files = event.getDragboard().getFiles();
         File selectedFile = files.get(0);
 
-        File fileIDs = new File("./MinecraftIds.txt");
+        File fileIDs = findFileIgnoreCase("./","MinecraftIds.txt");
         if(!fileIDs.exists()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Minecraft IDs file not found");

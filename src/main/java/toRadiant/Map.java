@@ -11,6 +11,8 @@ import java.util.List;
 public class Map {
     public ArrayList<Brush> brushes;
     public java.util.Map<Position, Block> blocksMap = new HashMap<>();
+    public java.util.Map<Position, Slab> slabsMap = new HashMap<>();
+    public java.util.Map<Position, Stairs> stairsMap = new HashMap<>();
 
     public int id;
     public int idEntity;
@@ -28,11 +30,18 @@ public class Map {
         id++;
     }
     public void AddSlab(int x, int y, int z, String t, boolean isBottom){
-        brushes.add(new Slab(x,y,z,t,id,isBottom));
+        Slab s = new Slab(x,y,z,t,id,isBottom);
+        brushes.add(s);
+        slabsMap.put(s.position,s);
         id++;
     }
     public void AddStairs(int x, int y, int z, String t, boolean isBottom, Direction d){
-        brushes.add(new Stairs(x,y,z,t,id,isBottom,new Slab(x,y,z,t,id+1,isBottom),d));
+        Slab s = new Slab(x,y,z,t,id+1,isBottom);
+        Stairs stair = new Stairs(x,y,z,t,id,d,isBottom);
+        brushes.add(stair);
+        brushes.add(s);
+        slabsMap.put(s.position,s);
+        stairsMap.put(stair.position,stair);
         id += 2;
     }
     public void AddPrefab(int x, int y, int z, String p, Direction direction){
@@ -84,23 +93,26 @@ public class Map {
     public void SaveMapInFile(String filename, HelloController controller){
         try {
 
-            //Getting lass groups
-            List<MergedBlock> groups = MergedBlock.greedyMerge(blocksMap);
-            System.out.println(groups.size());
+            //Getting class groups
+            List<MergedBlock> mergedBlocks = MergedBlock.greedyMerge(blocksMap);
+            List<MergedSlab> mergedSlabs = MergedSlab.greedyMerge(slabsMap);
+            List<MergedStair> mergedStairs = MergedStair.greedyMerge(stairsMap);
 
             // create a FileWriter object with the file name
             FileWriter writer = new FileWriter(filename);
 
             writer.write(header());
 
-            for (MergedBlock group : groups) {
-                writer.write(group.toString());
+            for (MergedBlock mBlock : mergedBlocks) {
+                writer.write(mBlock.toString());
             }
 
-            for (Brush b : brushes) {
-                if (!(b instanceof Block || b instanceof Prefab || b instanceof Model)) {
-                    writer.write(b.toString());
-                }
+            for (MergedSlab mSlab : mergedSlabs) {
+                writer.write(mSlab.toString());
+            }
+
+            for (MergedStair mStair : mergedStairs) {
+                writer.write(mStair.toString());
             }
 
             writer.write(footer());

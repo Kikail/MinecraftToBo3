@@ -4,6 +4,8 @@ public class Slab extends Brush {
     public Face bottom, top, front, back, left, right;
     public String texture;
     public int identifiant;
+    public Position position;
+    boolean isBottom = false;
     public Slab(String t,int id){
         identifiant = id;
         texture = t;
@@ -13,10 +15,13 @@ public class Slab extends Brush {
         back = new Face(new Vector3D(20,-20,12), new Vector3D(20,20,12), new Vector3D(20,20,-20));
         left = new Face(new Vector3D(20,20,12), new Vector3D(-20,20,12), new Vector3D(-20,20,-20));
         right = new Face(new Vector3D(-20,20,12), new Vector3D(-20,-20,12), new Vector3D(-20,-20,-20));
+        position = new Position(0,0,0);
+        isBottom = false;
     }
     public Slab(int x, int y, int z, String t,int id, boolean isBottom){
         identifiant = id;
         texture = t;
+        this.isBottom = isBottom;
         if (isBottom) {
             bottom = new Face(new Vector3D(20+(x*40),20+(y*40),-20+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-20+(z*40)), new Vector3D(-20+(x*40),-20+(y*40),-20+(z*40)));
             top = new Face(new Vector3D(-20+(x*40),-20+(y*40),0+(z*40)), new Vector3D(-20+(x*40),20+(y*40),0+(z*40)), new Vector3D(20+(x*40),20+(y*40),0+(z*40)));
@@ -33,6 +38,7 @@ public class Slab extends Brush {
             left = new Face(new Vector3D(12+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-20+(z*40)));
             right = new Face(new Vector3D(-20+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-20+(z*40)));
         }
+        position = new Position(x,y,z);
     }
     public String getIdFormat(){
         int i = 0;

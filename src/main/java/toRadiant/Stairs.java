@@ -1,11 +1,15 @@
 package toRadiant;
 
+import javafx.geometry.Pos;
+
 public class Stairs extends Brush {
     public Face bottom, top, front, back, left, right;
     public String texture;
     public int identifiant;
-    public Slab slab;
-    public Stairs(String t,int id, Slab s){
+    public Direction direction;
+    public Position position;
+    public boolean isBottom = false;
+    public Stairs(String t,int id){
         identifiant = id;
         texture = t;
         bottom = new Face(new Vector3D(20,20,-20), new Vector3D(-20,20,-20), new Vector3D(-20,-20,-20));
@@ -14,11 +18,13 @@ public class Stairs extends Brush {
         back = new Face(new Vector3D(20,-20,12), new Vector3D(20,20,12), new Vector3D(20,20,-20));
         left = new Face(new Vector3D(20,20,12), new Vector3D(-20,20,12), new Vector3D(-20,20,-20));
         right = new Face(new Vector3D(-20,20,12), new Vector3D(-20,-20,12), new Vector3D(-20,-20,-20));
-        slab = s;
+        direction = Direction.NORTH;
+        position = new Position(0,0,0);
     }
-    public Stairs(int x, int y, int z, String t,int id, boolean isBottom, Slab s, Direction d){
+    public Stairs(int x, int y, int z, String t,int id, Direction d, boolean isBottom){
         identifiant = id;
         texture = t;
+        this.isBottom = isBottom;
         switch (d) {
             case Direction.EAST:
                 bottom = new Face(new Vector3D(32+(x*40),20+(y*40),0+(z*40)), new Vector3D(0+(x*40),20+(y*40),0+(z*40)), new Vector3D(0+(x*40),-12+(y*40),0+(z*40)));
@@ -61,7 +67,6 @@ public class Stairs extends Brush {
                 right = new Face(new Vector3D(-20+(x*40),20+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-12+(z*40)), new Vector3D(-20+(x*40),-12+(y*40),-20+(z*40)));
                 break;
         }
-
         if (!isBottom) {
             bottom.first.z -= 20;
             top.first.z -= 20;
@@ -82,8 +87,8 @@ public class Stairs extends Brush {
             left.third.z -= 20;
             right.third.z -= 20;
         }
-
-        slab = s;
+        direction = d;
+        position = new Position(x,y,z);
     }
     public String getName(){
         return texture;
@@ -117,7 +122,6 @@ public class Stairs extends Brush {
         s += " "+left.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 -20 20 0 0\n";
         s += " "+right.toString() + " " + texture + " " + "-40 40 -20 20 0 0 lightmap_gray 16384 16384 20 20 0 0\n";
         s += "}\n";
-        s += slab.toString();
         return s;
     }
 }

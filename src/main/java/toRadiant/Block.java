@@ -4,15 +4,18 @@ public class Block extends Brush{
     public Face bottom, top, front, back, left, right;
     public String texture;
     public int identifiant;
+
+    public Position position;
     public Block(String t,int id){
         identifiant = id;
         texture = t;
         bottom = new Face(new Vector3D(20,20,-20), new Vector3D(-20,20,-20), new Vector3D(-20,-20,-20));
         top = new Face(new Vector3D(-20,-20,20), new Vector3D(-20,20,20), new Vector3D(20,20,20));
-        front = new Face(new Vector3D(-20,-20,140), new Vector3D(20,-20,140), new Vector3D(20,-20,-20));
-        back = new Face(new Vector3D(20,-20,140), new Vector3D(20,20,140), new Vector3D(20,20,-20));
-        left = new Face(new Vector3D(20,20,140), new Vector3D(-20,20,140), new Vector3D(-20,20,-20));
-        right = new Face(new Vector3D(-20,20,140), new Vector3D(-20,-20,140), new Vector3D(-20,-20,-20));
+        front = new Face(new Vector3D(-20,-20,20), new Vector3D(20,-20,20), new Vector3D(20,-20,-20));
+        back = new Face(new Vector3D(20,-20,20), new Vector3D(20,20,20), new Vector3D(20,20,-20));
+        left = new Face(new Vector3D(20,20,20), new Vector3D(-20,20,20), new Vector3D(-20,20,-20));
+        right = new Face(new Vector3D(-20,20,20), new Vector3D(-20,-20,20), new Vector3D(-20,-20,-20));
+        position = new Position(0,0,0);
     }
     public String getName(){
         return texture;
@@ -20,12 +23,41 @@ public class Block extends Brush{
     public Block(int x, int y, int z, String t,int id){
         identifiant = id;
         texture = t;
-        bottom = new Face(new Vector3D(20+(x*40),20+(y*40),-20+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-20+(z*40)), new Vector3D(-20+(x*40),-20+(y*40),-20+(z*40)));
-        top = new Face(new Vector3D(-20+(x*40),-20+(y*40),20+(z*40)), new Vector3D(-20+(x*40),20+(y*40),20+(z*40)), new Vector3D(20+(x*40),20+(y*40),20+(z*40)));
-        front = new Face(new Vector3D(-20+(x*40),-20+(y*40),140+(z*40)), new Vector3D(20+(x*40),-20+(y*40),140+(z*40)), new Vector3D(20+(x*40),-20+(y*40),-20+(z*40)));
-        back = new Face(new Vector3D(20+(x*40),-20+(y*40),140+(z*40)), new Vector3D(20+(x*40),20+(y*40),140+(z*40)), new Vector3D(20+(x*40),20+(y*40),-20+(z*40)));
-        left = new Face(new Vector3D(20+(x*40),20+(y*40),140+(z*40)), new Vector3D(-20+(x*40),20+(y*40),140+(z*40)), new Vector3D(-20+(x*40),20+(y*40),-20+(z*40)));
-        right = new Face(new Vector3D(-20+(x*40),20+(y*40),140+(z*40)), new Vector3D(-20+(x*40),-20+(y*40),140+(z*40)), new Vector3D(-20+(x*40),-20+(y*40),-20+(z*40)));
+        int baseX = x * 40;
+        int baseY = y * 40;
+        int baseZ = z * 40;
+
+        bottom = new Face(
+                new Vector3D(20 + baseX, 20 + baseY, -20 + baseZ),
+                new Vector3D(-20 + baseX, 20 + baseY, -20 + baseZ),
+                new Vector3D(-20 + baseX, -20 + baseY, -20 + baseZ)
+        );
+        top = new Face(
+                new Vector3D(-20 + baseX, -20 + baseY, 20 + baseZ),
+                new Vector3D(-20 + baseX, 20 + baseY, 20 + baseZ),
+                new Vector3D(20 + baseX, 20 + baseY, 20 + baseZ)
+        );
+        front = new Face(
+                new Vector3D(-20 + baseX, -20 + baseY, 20 + baseZ),
+                new Vector3D(20 + baseX, -20 + baseY, 20 + baseZ),
+                new Vector3D(20 + baseX, -20 + baseY, -20 + baseZ)
+        );
+        back = new Face(
+                new Vector3D(20 + baseX, -20 + baseY, 20 + baseZ),
+                new Vector3D(20 + baseX, 20 + baseY, 20 + baseZ),
+                new Vector3D(20 + baseX, 20 + baseY, -20 + baseZ)
+        );
+        left = new Face(
+                new Vector3D(20 + baseX, 20 + baseY, 20 + baseZ),
+                new Vector3D(-20 + baseX, 20 + baseY, 20 + baseZ),
+                new Vector3D(-20 + baseX, 20 + baseY, -20 + baseZ)
+        );
+        right = new Face(
+                new Vector3D(-20 + baseX, 20 + baseY, 20 + baseZ),
+                new Vector3D(-20 + baseX, -20 + baseY, 20 + baseZ),
+                new Vector3D(-20 + baseX, -20 + baseY, -20 + baseZ)
+        );
+        position = new Position(x,y,z);
     }
     public String getIdFormat(){
         int i = 0;

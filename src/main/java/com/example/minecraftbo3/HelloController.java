@@ -83,7 +83,7 @@ public class HelloController {
         File file = fileChooser.showOpenDialog(stage);
         if(file != null) {
             File fileIds = findFileIgnoreCase("./","MinecraftIds.txt");
-            if(!fileIds.exists()){
+            if(fileIds != null && !fileIds.exists()){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Minecraft IDs file not found");
                 alert.setHeaderText("Please put the minecraft IDs file in the current directory");

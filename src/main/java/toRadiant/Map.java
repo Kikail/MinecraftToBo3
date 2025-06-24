@@ -5,36 +5,42 @@ import com.example.minecraftbo3.HelloController;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Map {
-    public ArrayList<Brush> blocks;
+    public ArrayList<Brush> brushes;
+    public java.util.Map<Position, Block> blocksMap = new HashMap<>();
+
     public int id;
     public int idEntity;
 
     public Map(){
         id = 0;
         idEntity = 1;
-        blocks = new ArrayList<Brush>();
+        brushes = new ArrayList<>();
     }
 
     public void AddBlock(int x, int y, int z, String t){
-        blocks.add(new Block(x,y,z,t,id));
+        Block b = new Block(x,y,z,t,id);
+        brushes.add(b);
+        blocksMap.put(b.position,b);
         id++;
     }
     public void AddSlab(int x, int y, int z, String t, boolean isBottom){
-        blocks.add(new Slab(x,y,z,t,id,isBottom));
+        brushes.add(new Slab(x,y,z,t,id,isBottom));
         id++;
     }
     public void AddStairs(int x, int y, int z, String t, boolean isBottom, Direction d){
-        blocks.add(new Stairs(x,y,z,t,id,isBottom,new Slab(x,y,z,t,id+1,isBottom),d));
+        brushes.add(new Stairs(x,y,z,t,id,isBottom,new Slab(x,y,z,t,id+1,isBottom),d));
         id += 2;
     }
     public void AddPrefab(int x, int y, int z, String p, Direction direction){
-        blocks.add(new Prefab(x,y,z,p,idEntity,direction));
+        brushes.add(new Prefab(x,y,z,p,idEntity,direction));
         idEntity ++;
     }
     public void AddModel(int x, int y, int z, String p, Direction direction){
-        blocks.add(new Model(x,y,z,p,idEntity,direction));
+        brushes.add(new Model(x,y,z,p,idEntity,direction));
         idEntity ++;
     }
 
@@ -74,21 +80,33 @@ public class Map {
         s +=  "}\n";
         return s;
     }
+
     public void SaveMapInFile(String filename, HelloController controller){
         try {
+
+            //Getting lass groups
+            List<MergedBlock> groups = MergedBlock.greedyMerge(blocksMap);
+            System.out.println(groups.size());
+
             // create a FileWriter object with the file name
             FileWriter writer = new FileWriter(filename);
 
             writer.write(header());
-            for(Brush b : blocks){
-                if(!(b instanceof Prefab)&&!(b instanceof Model)){
+
+            for (MergedBlock group : groups) {
+                writer.write(group.toString());
+            }
+
+            for (Brush b : brushes) {
+                if (!(b instanceof Block || b instanceof Prefab || b instanceof Model)) {
                     writer.write(b.toString());
                 }
             }
+
             writer.write(footer());
 
-            for(Brush b : blocks){
-                if(b instanceof Prefab || b instanceof Model){
+            for (Brush b : brushes) {
+                if (b instanceof Prefab || b instanceof Model) {
                     writer.write(b.toString());
                 }
             }

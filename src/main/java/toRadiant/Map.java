@@ -1,6 +1,7 @@
 package toRadiant;
 
 import com.example.minecraftbo3.HelloController;
+import com.example.minecraftbo3.Options;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,11 +17,13 @@ public class Map {
 
     public int id;
     public int idEntity;
+    public Options options;
 
-    public Map(){
+    public Map(Options o){
         id = 0;
         idEntity = 1;
         brushes = new ArrayList<>();
+        options = o;
     }
 
     public void AddBlock(int x, int y, int z, String t){
@@ -90,36 +93,89 @@ public class Map {
         return s;
     }
 
+    public void deleteUselessBlocks(){
+        java.util.Map<Position, Block> finalBlocks = new HashMap<>();
+
+        List<Position> positions = new ArrayList<>(blocksMap.keySet());
+        int i = 0;
+
+        for (Position pos : positions){
+            // We have to test if all blocks are good
+            Block neighTop = blocksMap.get(new Position(pos.x,pos.y,pos.z + 1));
+            Block neighBot = blocksMap.get(new Position(pos.x,pos.y,pos.z - 1));
+            Block neighLeft = blocksMap.get(new Position(pos.x,pos.y + 1,pos.z));
+            Block neighRight = blocksMap.get(new Position(pos.x,pos.y - 1,pos.z));
+            Block neighFront = blocksMap.get(new Position(pos.x + 1,pos.y,pos.z));
+            Block neighBack = blocksMap.get(new Position(pos.x - 1,pos.y,pos.z));
+            if(
+                    Block.isBlockInvisible(neighTop) ||
+                    Block.isBlockInvisible(neighBot) ||
+                    Block.isBlockInvisible(neighLeft) ||
+                    Block.isBlockInvisible(neighRight) ||
+                    Block.isBlockInvisible(neighFront) ||
+                    Block.isBlockInvisible(neighBack)
+            ){
+                finalBlocks.put(pos, blocksMap.get(pos));
+            }
+            else{
+                i++;
+                continue;
+            }
+        }
+
+        System.out.println("Removed " + i + " useless blocks");
+
+        blocksMap.clear();
+        blocksMap.putAll(finalBlocks);
+    }
+
     public void SaveMapInFile(String filename, HelloController controller){
         try {
-
-            //Getting class groups
-            List<MergedBlock> mergedBlocks = MergedBlock.greedyMerge(blocksMap);
-            List<MergedSlab> mergedSlabs = MergedSlab.greedyMerge(slabsMap);
-            List<MergedStair> mergedStairs = MergedStair.greedyMerge(stairsMap);
+            if(options.deleteUselessBlocks){
+                // Deleting all useless blocks
+                deleteUselessBlocks();
+            }
 
             // create a FileWriter object with the file name
             FileWriter writer = new FileWriter(filename);
 
             writer.write(header());
 
-            for (MergedBlock mBlock : mergedBlocks) {
-                writer.write(mBlock.toString());
-            }
-
-            for (MergedSlab mSlab : mergedSlabs) {
-                writer.write(mSlab.toString());
-            }
-
-            for (MergedStair mStair : mergedStairs) {
-                writer.write(mStair.toString());
+            if(options.includeBlocks){
+                if(options.autoMerge){
+                    //Getting class groups
+                    List<MergedSlab> mergedSlabs = MergedSlab.greedyMerge(slabsMap);
+                    List<MergedStair> mergedStairs = MergedStair.greedyMerge(stairsMap);
+                    List<MergedBlock> mergedBlocks = MergedBlock.greedyMerge(blocksMap);
+                    for (MergedBlock mBlock : mergedBlocks) {
+                        writer.write(mBlock.toString());
+                    }
+                    for (MergedSlab mSlab : mergedSlabs) {
+                        writer.write(mSlab.toString());
+                    }
+                    for (MergedStair mStair : mergedStairs) {
+                        writer.write(mStair.toString());
+                    }
+                }
+                else{
+                    for (Brush b : brushes) {
+                        if (!(b instanceof Prefab) && !(b instanceof Model)) {
+                            writer.write(b.toString());
+                        }
+                    }
+                }
             }
 
             writer.write(footer());
 
-            for (Brush b : brushes) {
-                if (b instanceof Prefab || b instanceof Model) {
-                    writer.write(b.toString());
+            if(options.includeModels || options.includePrefabs){
+                for (Brush b : brushes) {
+                    if (options.includePrefabs && b instanceof Prefab) {
+                        writer.write(b.toString());
+                    }
+                    if (options.includeModels && b instanceof Model) {
+                        writer.write(b.toString());
+                    }
                 }
             }
 

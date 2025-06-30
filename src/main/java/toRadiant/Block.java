@@ -90,4 +90,13 @@ public class Block extends Brush{
         s += "}\n";
         return s;
     }
+    public static boolean isBlockInvisible(Block block){
+        if (block == null){
+            return true;
+        }
+        if(block.getName().contains("air") || block.getName().contains("water") || block.getName().contains("leaves") || block.getName().contains("glass")){
+            return true;
+        }
+        return false;
+    }
 }

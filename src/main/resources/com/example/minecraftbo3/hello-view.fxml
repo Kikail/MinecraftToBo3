@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -53,4 +54,15 @@
          </children>
       </VBox>
    </center>
+   <right>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="borderpane" BorderPane.alignment="CENTER">
+         <children>
+            <CheckBox fx:id="checkAutoMerge" mnemonicParsing="false" onAction="#handleAutoMergeOption" text="Auto-merge blocks" wrapText="true" />
+            <CheckBox fx:id="checkUselessBlocks" mnemonicParsing="false" onAction="#handleUselessBlocks" text="Delete not visible blocks" wrapText="true" />
+            <CheckBox fx:id="checkIncludeBlocks" mnemonicParsing="false" onAction="#handleIncludeBlocks" text="Include blocks" wrapText="true" />
+            <CheckBox fx:id="checkIncludeModels" mnemonicParsing="false" onAction="#handleIncludeModels" text="Include models" wrapText="true" />
+            <CheckBox fx:id="checkIncludePrefabs" mnemonicParsing="false" onAction="#handleIncludePrefabs" text="Include prefabs" wrapText="true" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

@@ -5,10 +5,7 @@ import fromMinecraft.SchematicExtractor;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,11 +14,27 @@ import javafx.stage.Stage;
 import toRadiant.Map;
 import toRadiant.ToRadiantPrefab;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.util.List;
 
 public class HelloController {
     public Stage stage;
+
+    @FXML
+    private CheckBox checkAutoMerge;
+
+    @FXML
+    private CheckBox checkIncludeBlocks;
+
+    @FXML
+    private CheckBox checkIncludeModels;
+
+    @FXML
+    private CheckBox checkIncludePrefabs;
+
+    @FXML
+    private CheckBox checkUselessBlocks;
 
     @FXML
     private VBox dragZone;
@@ -33,6 +46,31 @@ public class HelloController {
     private ProgressBar progressBar;
 
     private boolean processing = false;
+
+    public Options options;
+
+    public void updateOptions(){
+        options.autoMerge = checkAutoMerge.isSelected();
+        options.includeBlocks = checkIncludeBlocks.isSelected();
+        options.includeModels = checkIncludeModels.isSelected();
+        options.includePrefabs = checkIncludePrefabs.isSelected();
+        options.deleteUselessBlocks = checkUselessBlocks.isSelected();
+        System.out.println("AutoMerge: " + options.autoMerge + " vs " +checkAutoMerge.isSelected());
+        System.out.println("IncludeBlocks: " + options.includeBlocks + " vs " +checkIncludeBlocks.isSelected());
+        System.out.println("IncludeModels: " + options.includeModels + " vs " +checkIncludeModels.isSelected());
+        System.out.println("IncludePrefabs: " + options.includePrefabs + " vs " +checkIncludePrefabs.isSelected());
+        System.out.println("UselessBlocks: " + options.deleteUselessBlocks + " vs " +checkUselessBlocks.isSelected());
+    }
+
+    @FXML
+    public void initialize() {
+        options = new Options();
+        checkAutoMerge.setSelected(options.autoMerge);
+        checkIncludeBlocks.setSelected(options.includeBlocks);
+        checkIncludeModels.setSelected(options.includeModels);
+        checkIncludePrefabs.setSelected(options.includePrefabs);
+        checkUselessBlocks.setSelected(options.deleteUselessBlocks);
+    }
 
     @FXML
     void handleDragOver(DragEvent event) {
@@ -95,7 +133,7 @@ public class HelloController {
             listView.getItems().clear();
             listView.getItems().add(new Label(file.getAbsolutePath()));
             // On doit deja transformer le .schem en .txt
-            Map map = new Map();
+            Map map = new Map(options);
             setProcessing(true);
             SchematicExtractor extractor = new SchematicExtractor();
             extractor.Extract(file.getAbsolutePath(), map, fileIds,this);
@@ -124,7 +162,7 @@ public class HelloController {
             listView.getItems().clear();
             listView.getItems().add(new Label(filepath));
             // On doit deja transformer le .schem en .txt
-            Map map = new Map();
+            Map map = new Map(options);
             setProcessing(true);
             SchematicExtractor extractor = new SchematicExtractor();
             extractor.Extract(filepath, map, fileIDs,this);
@@ -170,6 +208,27 @@ public class HelloController {
     }
     public void setProcessing(boolean processing){
         this.processing = processing;
+    }
+
+    @FXML
+    void handleAutoMergeOption(ActionEvent event) {
+        updateOptions();
+    }
+    @FXML
+    void handleIncludeBlocks(ActionEvent event) {
+        updateOptions();
+    }
+    @FXML
+    void handleIncludeModels(ActionEvent event) {
+        updateOptions();
+    }
+    @FXML
+    void handleIncludePrefabs(ActionEvent event) {
+        updateOptions();
+    }
+    @FXML
+    void handleUselessBlocks(ActionEvent event) {
+        updateOptions();
     }
 
 }

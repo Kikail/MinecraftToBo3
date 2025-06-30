@@ -73,3 +73,21 @@
 .progress-bar > .bar {
     -fx-background-color: #d8811a;
 }
+
+.check-box .box {
+
+    -fx-background-color: white;
+    -fx-border-radius:3px;
+
+}
+
+.check-box:selected .mark {
+
+    -fx-background-color: d8811a;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: #242424;
+}
